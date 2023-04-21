@@ -1,0 +1,55 @@
+FROM FROM ubuntu:22.04
+LABEL author="archana" 
+ARG DEBIAN_FRONTEND noninteractive
+RUN apt update && install apache2 -y \
+    apt install php libapache2-mod-php -y
+RUN chmod -R 777 /var/www/html
+RUN echo "<?php phpinfo(); >?" /var/www/html/info.php
+EXPOSE 80
+CMD ["apache2ctl","-D","FOREGROUND"]
+
+FROM ubuntu:22.04
+LABEL author="archana" org="qt"
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update && \
+    apt install vim -y && \
+    apt install apache2 -y && \
+    apt install php -y && \
+    apt install libapache2-mod-php -y
+WORKDIR /var/www/html
+COPY /info.php /var/www/html/info.php
+EXPOSE 80
+CMD [ "apache2ctl","-D","FOREGROUND" ]
+
+
+
+FROM FROM ubuntu:22.04
+LABEL author="archana" 
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt update && install apache2 -y \
+    apt update && apt install nginx -y \
+    apt install php8.1-fpm -y
+RUN chmod -R 777 /var/www/html
+RUN echo "<?php phpinfo(); >?" /var/www/html/info.php
+EXPOSE 80
+CMD ["nginx","-g","daemon off;"]
+
+
+## It's executed dockerfile
+
+FROM ubuntu:22.04
+LABEL author="archana" 
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update
+RUN apt-get install nginx -y && \
+    rm -rf /var/lib/apt/lists/*
+COPY default.conf /etc/nginx/sites-available/mydomain  
+RUN nginx -t
+RUN chmod -R 777 /var/www/html
+RUN echo "<?php phpinfo(); >?" /var/www/html/info.php
+RUN service php8.1-fpm restart
+ENTRYPOINT ["/bin/bash","-c", "service php8.1-fpm start && nginx -g 'daemon off;'"]
+EXPOSE 80
+
+
+CMD ["nginx","-g","daemon off;"]

@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+ADD https://github.com/nopSolutions/nopCommerce/releases/download/release-4.40.2/nopCommerce_4.40.2_NoSource_linux_x64.zip /nop/nopCommerce_4.40.2_NoSource_linux_x64.zip
+WORKDIR /nop
+RUN apt-get update && apt-get install unzip -y
+RUN cd /nop && unzip nopCommerce_4.40.2_NoSource_linux_x64.zip && rm nopCommerce_4.40.2_NoSource_linux_x64.zip
+EXPOSE 5000
+ENV ASPNETCORE_URLS="http://0.0.0.0:5000"
+CMD ["dotnet", "Nop.Web.dll"]
+
+# docker image build -t nop:1.0.0.0 .  [for building  docker image nop is my image name]
+# docker container run --name nop -d -P nop:1.0.0.0 [for creating the container]
+# docker container rm -f $(docker container ls -aq)   [If container exited then remove that container and again created the container]
