@@ -118,11 +118,11 @@ CMD [ "apache2ctl","-D","FOREGROUND" ]
   docker container run -d -P --name phpcont apache:v1.0.0
 
   docker container ls -a
-
+* Execute this commands after with use of that port number in dockerplayground type thae port number the apache page came after /info.php type after that link then php page opened.  
  ![Preview](./images/img6.png)
  ![Preview](./images/img12.png)
  ![Preview](./images/img13.png)
- ![Preview](./images/)  
+ ![Preview](./images/img14.png)  
 
 * Dockerfile 
 ```
